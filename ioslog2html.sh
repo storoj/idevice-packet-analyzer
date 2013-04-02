@@ -6,4 +6,4 @@ if [ -z "$2" ]; then
     exit
 fi
 
-awk -f parser.awk $1 > $2
+awk -f ioslog2html.awk $1 > $2
