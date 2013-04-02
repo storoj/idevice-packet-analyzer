@@ -53,9 +53,7 @@ else
     # if plain-text plist not found then look for binary one
     grep -q 'bplist00' $bin_file
     if [ $? -eq 0 ]; then
-        bytesBeforePlist=$(grep -oEa "^(.*)bplist00" $bin_file | wc -c)
-        # minus length of "<?xml"
-        bytesBeforePlist=$((bytesBeforePlist-9))
+        bytesBeforePlist=$(strings -a -t x $bin_file | grep bplist00 | awk '{ print $1 }')
 
         plistOffset=$((bytesBeforePlist+1))
 
@@ -81,6 +79,6 @@ else
     htmlencode $plist_file
     endHTMLBlock
     # remove temporary plist file
-    # rm $plist_file
+    rm $plist_file
 
 fi
