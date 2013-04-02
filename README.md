@@ -7,7 +7,7 @@ It can be installed with [homebrew](http://mxcl.github.com/homebrew/)
 
     brew install socat
 
-iOS-based devices talk with host via usbmuxd process and it's unix socket /var/run/usbmuxd. 
+iOS-based devices talk with host via usbmuxd process and it's unix socket located at `/var/run/usbmuxd`. 
 To sniff the traffic you must replace original socket with fake one, redirect the traffic and log data.
 
     sudo mv /var/run/usbmuxd /var/run/usbmuxd_real
