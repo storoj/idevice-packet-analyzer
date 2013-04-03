@@ -43,17 +43,16 @@ plistDescription=""
 grep -q '<\?xml' $bin_file
 
 if [ $? -eq 0 ]; then
-    bytesBeforePlist=$(grep -oEa "^(.*)<\?xml" $bin_file | wc -c)
-    # minus length of "<?xml"
-    bytesBeforePlist=$((bytesBeforePlist-5))
+    bytesBeforePlist=$(strings -a -t d $bin_file | grep '<\?xml' | awk '{ print $1 }')
+    plistOffset=$((bytesBeforePlist+1))
 
     plistDescription="PLAIN-TEXT PLIST"
-    tail -c +$bytesBeforePlist $bin_file > $plist_file
+    tail -c +$plistOffset $bin_file > $plist_file
 else
     # if plain-text plist not found then look for binary one
     grep -q 'bplist00' $bin_file
     if [ $? -eq 0 ]; then
-        bytesBeforePlist=$(strings -a -t x $bin_file | grep bplist00 | awk '{ print $1 }')
+        bytesBeforePlist=$(strings -a -t d $bin_file | grep bplist00 | awk '{ print $1 }')
 
         plistOffset=$((bytesBeforePlist+1))
 
