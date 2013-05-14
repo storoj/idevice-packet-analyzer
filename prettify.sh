@@ -52,7 +52,7 @@ else
     # if plain-text plist not found then look for binary one
     grep -q 'bplist00' $bin_file
     if [ $? -eq 0 ]; then
-        bytesBeforePlist=$(strings -a -t d $bin_file | grep bplist00 | awk '{ print $1 }')
+        bytesBeforePlist=$(strings -a -t d $bin_file | grep bplist00 | tail -n 1 | awk '{ print $1 }')
 
         plistOffset=$((bytesBeforePlist+1))
 
@@ -65,7 +65,7 @@ fi
 
 if [ $bytesBeforePlist -eq -1 ]; then
     beginHTMLBlock "raw" "Raw Data"
-    xxd -g 1 $bin_file -
+    xxd -g 1 $bin_file - | htmlencode
     endHTMLBlock
 else
     if [ $bytesBeforePlist -gt 0 ]; then
